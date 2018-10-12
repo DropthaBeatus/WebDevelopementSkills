@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Creation</title>
+    <link rel="stylesheet" type="text/css" href="baseball.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+ $(document).ready(function(){ 
+     
+$('#creation').submit(function(){
+        $('.alert').html("Loading...");
+    var i = 0;
+    while(i < 3){
+    if(document.getElementsByClassName("qwert")[i].value == ""){
+          $('.alert').html("One of your forms is empty");
+            return;
+    }
+        i++;
+    }
+  var post_data = $('#creation').serialize();
+  $.post('create.php', post_data, function(data){
+        $.ajax({
+          type: "POST",
+          url: "create.php",
+          data: post_data,
+         success:function(data){
+               
+                },
+        error:function(data){
+                $('.alert').html("Failed to Connect");
+            },
+                })   
+        
+        });
+    alert("Account Created");
+    window.location.replace("index.html");
+    });
+});
+    
+</script>
+</head>
+<body>
+<div class="Wrapper">
+<h1 class="alert">Create Account</h1>
+<div class="videoWrapper">
+    <form id="creation" onsubmit="return false">
+        <div class="createWrap">
+        <div class="create">
+        ACCOUNT NAME:<input class="qwert" type="text" name="username">
+        </div>
+        <div class="create">
+        PASSWORD:<input class="qwert" type="text" name="password">
+        </div>
+        <div class="create">
+        DATE OF BIRTH:<input id="datepicker" class="qwert" type="text" name="DOB">
+        </div>
+        </div>
+    </form>
+         <div class="replywrapper">
+    <button type="submit" class="reply" form="creation">Create Account</button>
+        </div>
+     </div>
+        </div>
+</body>
+</html>

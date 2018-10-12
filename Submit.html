@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en">  
+<head>
+<title>Baseball</title>
+<link rel="stylesheet" type="text/css" href="baseball.css">
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+    <script>
+    $(document).ready(function(){ 
+      $.get('list.php', function(data) {
+            $.ajax({
+              type: "GET",
+              url: "list.php",
+
+             success:function(data) {
+                 var dat = $.parseJSON(data);
+                 var username = getCookie("username");
+                $('.halpme').html(username);
+                 $('#asdf').val(username);
+                 $('#first').html("<h3>"+dat[0].key1+"</h3>");
+                  $('#first').append("<br>"+ dat[0].key2);
+                 $('#first').append("<br>"+ dat [0].key3);
+                 $('#second').html("<h3>"+dat[1].key1+"</h3>");
+                  $('#second').append("<br>"+ dat[1].key2);
+                 $('#second').append("<br>"+ dat [1].key3);
+                 $('#third').html("<h3>"+dat[2].key1+"</h3>");
+                  $('#third').append("<br>"+ dat[2].key2);
+                 $('#third').append("<br>"+ dat [2].key3);
+                 //   });
+                    },
+                 error: function(data) {
+                    $('p').html("Failed to Connect");
+                },
+                    })   
+                });
+//Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+        function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    else{
+    return "";
+    }
+}
+         $('#subTitle').submit(function(){
+        var username = getCookie("username");
+        $('.halpme').html(username);
+        $('#asdf').val(username);
+        var post_data = $('#subTitle').serialize();
+        var check = getCookie("username");
+        if(check == "" || check == undefined ){
+         alert("You are not logged in. Please Login to submit Post");   
+        }
+      else{
+          $.post('submit.php', post_data, function(data) {
+            $.ajax({
+              type: "POST",
+              url: "submit.php",
+              data: post_data,
+             success:function(data) {
+                 alert("successfully posted");
+                    },
+                 error: function(data) {
+                    alert("Failed to Connect");
+                },
+                    })   
+                });
+          alert("successfully posted");
+          location.reload();
+      }
+    });
+});
+
+</script>
+</head>
+<body> 
+ <div class="contentbox">
+    <br>
+     <br>
+     <div class="biggerpicture">
+     <div class="profile">
+         <div class="v">
+        <img class="user" src="profilepic.png" alt="ProfilePic">
+         </div>
+     <div class="v">
+        <p class="user halpme check">Not Currently logged in</p>
+     </div>
+     </div>
+        <div class="box">
+        <div class ="textBox">
+        <form id="subTitle" onsubmit="return false">
+        Title:<br>
+        <input id="submitTitle" type="text" name="title" value="test">
+        <br>
+        Text:<br>
+        <textarea id="submitText" name="text">PUT TEXT HERE</textarea>
+        <input id="asdf" class="hide" type="text" name="username">
+        </form>
+            </div>
+              <div class="replywrapper">
+            <button type="submit" class="reply" form="subTitle" >Submit Post</button>
+     </div>
+         </div>
+         <div class="recentWrapper">
+                 <h1 id="recentHeader">RECENT POST</h1>
+            <div class="b">
+             
+                <p id="first" class="recent">testing testing yeperoni</p>
+            </div>
+            <div class="b">
+                <p id="second" class="recent">test</p>
+            </div>
+            <div class="b">
+                <p id="third" class="recent">test</p>
+            </div>
+                 
+
+         </div>
+    <br>
+    <br>
+     
+    </div>   
+ </div>
+  
+
+</body>
+</html>

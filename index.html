@@ -1,0 +1,192 @@
+<!Doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HISTORY OF BASEBALL</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="baseball.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet"> 
+  <script>
+$( function() {
+    $( "#tabs" ).tabs();
+  } );
+$( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+      
+     
+    $(document).ready(function(){ 
+    var check = getCookie("username");
+    if(check == "undefined" || check == "" || check == undefined){
+     $('#Loggy').css({
+                'display' : 'block'
+                 });
+                $('#Incorret').css({
+                'display' : 'none'
+                 }); 
+                 $('#Logout').css({
+                'display' : 'none'
+                 });
+                $('.showLogout').css({
+                'display' : 'block'
+                 });
+                  $('.showLogin').css({
+                'display' : 'none'
+                 });
+                $('.check').html("Not Currently logged in");
+                 
+    } else{
+        $('#Loggy').css({
+                'display' : 'none'
+                 });
+                $('#Incorret').css({
+                'display' : 'none'
+                 }); 
+                 $('#Logout').css({
+                'display' : 'block'
+                 });
+                 $('.showLogout').css({
+                'display' : 'none'
+                 });
+                  $('.showLogin').css({
+                'display' : 'block'
+                 });
+      
+      
+      
+    }
+        
+    $('#Loggy').submit(function(){
+        var post_data = $('#Loggy').serialize();
+      $.post('login.php', post_data, function(data) {
+            $.ajax({
+              type: "POST",
+              url: "login.php",
+              data: post_data,
+                
+             success:function(data) {
+                 if(!$.trim(data)){
+                $('#Incorret').css({
+                'display' : 'block'
+                 }); 
+                $('#Incorret').html("Error not correct login");
+                return false;
+                 }
+                 else{
+                   $('.check').html(data);//.Info);
+                     createCookie("username", data, 1);
+                     getCookie("username");
+                 $('#Loggy').css({
+                'display' : 'none'
+                 });
+                $('#Incorret').css({
+                'display' : 'none'
+                 }); 
+                 $('#Logout').css({
+                'display' : 'block'
+                 });
+                $('.showLogout').css({
+                'display' : 'none'
+                 });
+                  $('.showLogin').css({
+                'display' : 'block'
+                 });
+      
+                 }
+                    },
+                 error: function(data) {
+                    $('#Incorrect').html("Failed to Connect");
+                },
+                    })   
+                });
+    });
+//Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+    var createCookie = function(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+//Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return(unescape(document.cookie.substring(c_start, c_end)));
+        }
+    }
+    else{
+    return "";
+    }
+}
+
+
+    $('#Logout').click(function(){
+        delete_cookie("username");
+        $('#Loggy').css({
+                'display' : 'block'
+        });
+        $('#Logout').css({
+                'display' : 'none' 
+        
+        })
+        $('.showLogout').css({
+            'display' : 'block'
+                 });
+        $('.showLogin').css({
+            'display' : 'none'
+                 });
+        $('.check').html("Not Currently logged in");
+        location.reload();
+       });
+    });
+function delete_cookie(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/Submit.html';
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+}
+  </script>
+</head>
+<body>
+<div id="mainTitle">
+<h1 class="baseDisp">BaseBall History
+</h1>
+    </div>
+<form id="Loggy" onsubmit="return false">
+  Username:<br>
+  <input type="text" name="username" value="test">
+  <br>
+  Password:<br>
+  <input type="text" name="password" value="pass">
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+    <p id="Incorret"></p>
+<button id="Logout" type="submit">Logout? </button>
+<a class="showLogout" href="accountcreation.html">Create an Account?</a>
+<div id="tabs">
+  <ul>
+    <li><a href="recentPost.html">View All Post</a></li>
+    <li><a href="Submit.html">POST</a></li>
+    <li><a class="showLogin" href="myPost.html">View my submissions</a></li>
+    <li><a href="Video.html">Video</a></li>
+    <li><a href="pictures.html">Historical Photos</a></li>
+  </ul>
+</div>
+ 
+ 
+</body>
+</html>

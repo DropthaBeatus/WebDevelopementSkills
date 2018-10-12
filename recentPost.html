@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="en">  
+<head>
+<title>Baseball</title>
+<link rel="stylesheet" type="text/css" href="baseball.css">
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+    <script>
+    var i = 0;
+    var length;
+    var dat;
+         $(document).ready(function(){ 
+
+          $.get('list.php', function(data) {
+            $.ajax({
+              type: "GET",
+              url: "list.php",
+
+             success:function(data) {
+                  dat = $.parseJSON(data); 
+                  $('.user').html(dat[0].key1);
+                  $('.firstty').html(dat[0].key2);
+                  $('.firsttt').html(dat[0].key3);
+                 var i = 1;
+                while(i < dat.length){
+                    $('#1xderfty').append("<div class='biggerpicture'><div class='profile'><div class='v'><img class='user' src='profilepic.png' alt='ProfilePic'></div><div class='v'><p class='user halpme check'>"+dat[i].key1+"</p></div></div><div class='box'><div class ='textBox'><p id='titlelish'>"+dat[i].key2+"</p><p id='textyish'>"+dat[i].key3+"</p></div></div><div>");
+                        i++;
+                    }
+                    },
+                 error: function(data) {
+                    alert("Failed to Connect");
+                },
+                    })  
+
+                });
+
+
+});
+
+ //Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+        function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    else{
+    return "";
+    }
+        }
+   
+
+
+</script>
+</head>
+<body>
+    <div id="1xderfty">
+    <h1>All people who posted - Ordered by most recent</h1>
+     <div class="biggerpicture">
+     <div class="profile">
+         <div class="v">
+        <img class="user" src="profilepic.png" alt="ProfilePic">
+         </div>
+     <div class="v">
+        <p class="user halpme check">Not Currently logged in</p>
+     </div>
+     </div>
+        <div class="box">
+        <div class ="textBox">
+            <p id="titlelish" class="firstty">Title</p>
+            <p id="textyish" class="firsttt">post</p>
+        </div>
+         </div>
+    </div> 
+    </div>
+</body>
+</html>

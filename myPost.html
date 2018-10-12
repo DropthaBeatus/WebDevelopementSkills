@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html lang="en">  
+<head>
+<title>Baseball</title>
+<link rel="stylesheet" type="text/css" href="baseball.css">
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+    <script>
+    var i = 0;
+    var length;
+    var dat;
+    $(document).ready(function(){ 
+ //Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+        function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    else{
+    return "";
+    }
+        }
+        
+        
+        var check = getCookie("username");
+        if(check == "" || check == undefined ){
+         alert("You are not logged in.");
+        window.location.replace("index.html");
+        }
+      else{
+           $('.halpme').html(check);
+             $('#asdf').val(check);
+            var uname = getCookie("username");  
+    
+            var UpDat = {
+            'username' : uname,
+            };
+          $.get('myPost.php', UpDat, function(data) {
+            $.ajax({
+              type: "GET",
+              url: "myPost.php",
+              data: UpDat,
+             success:function(data) {
+                  dat = $.parseJSON(data); 
+                    console.log(dat);
+                 $('#titlelee').html(dat[0].key1);
+                  $('#texty').html(dat[0].key2);
+                    length = dat.length;
+                    console.log(length);
+                    },
+                 error: function(data) {
+                    alert("Failed to Connect");
+                },
+                    })  
+                });
+
+      }
+
+// console.log(dat);
+});
+function nextPost(){
+//alert(dat[0].key1);
+$('#titlelee').html("Loading");
+$('#texty').html("Loading");
+  if(i < length-1){
+        i++;
+        console.log(i);
+    }
+    else{
+        i = 0;
+        console.log(i);
+    }
+    
+$('#titlelee').html(dat[i]. key1);
+$('#texty').html(dat[i]. key2);
+  
+  console.log(i);  
+ }
+function prevPost(){
+$('#titlelee').html("Loading");
+$('#texty').html("Loading");
+ if(i == 0){
+        i = length-1;
+        console.log(i);
+    }
+    else{
+        i--;
+        console.log(i);
+    }
+$('#titlelee').html(dat[i]. key1);
+$('#texty').html(dat[i]. key2);
+
+  console.log(i);  
+ }
+ //Siting code <Kevin Burke> (February 1, 2014) https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie.
+        function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    else{
+    return "";
+    }
+        }
+   
+
+
+</script>
+</head>
+<body> 
+     <div class="biggerpicture">
+     <div class="profile">
+         <div class="v">
+        <img class="user" src="profilepic.png" alt="ProfilePic">
+         </div>
+     <div class="v">
+        <p class="user halpme check">Not Currently logged in</p>
+     </div>
+     </div>
+        <div class="box">
+        <div class ="textBox">
+            <p id="titlelee">Title broooo</p>
+            <p id="texty">my post</p>
+        </div>
+        <div class="replywrapper">
+            <button onclick="prevPost()">Previous Post</button>
+            <button onclick="nextPost()">Next Post</button>
+        </div>
+
+         </div>
+    </div> 
+  
+</body>
+</html>
